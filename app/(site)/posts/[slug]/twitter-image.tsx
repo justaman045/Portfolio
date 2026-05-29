@@ -1,10 +1,9 @@
 import { ImageResponse } from "next/og";
 import { allPosts } from "contentlayer/generated";
-import { format, parseISO } from "date-fns";
 
 import { defaultAuthor } from "@/lib/metadata";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 export const alt = `Article by ${defaultAuthor.name}`;
 export const size = {
@@ -24,6 +23,8 @@ export default async function Image({ params }: { params: Promise<{ slug: string
   }
 
   const date = post.lastUpdatedDate || post.publishedDate;
+
+  const d = new Date(date);
 
   return new ImageResponse(
     (
@@ -76,7 +77,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
               fontSize: "20px",
             }}
           >
-            {format(parseISO(date), "LLLL d, yyyy")} &middot; {post.readTimeMinutes} min read
+            {d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })} &middot; {post.readTimeMinutes} min read
           </p>
         </div>
       </div>
