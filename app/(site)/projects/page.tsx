@@ -1,7 +1,5 @@
 import { Metadata } from "next";
 import { format, parseISO } from "date-fns";
-import { AlertTriangle } from "lucide-react";
-
 import { projects } from "@/lib/projects-data";
 import { SpotlightCard } from "@/components/spotlight-card";
 

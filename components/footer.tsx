@@ -32,7 +32,7 @@ const Footer = () => {
           <p className="text-sm text-muted-foreground md:text-left">
             &copy; {new Date().getFullYear()} Built by {defaultAuthor.name}. &nbsp;
             <a
-              href={defaultAuthor.socialProfiles.find((platform) => platform.name === "x")?.link}
+              href={defaultAuthor.socialProfiles.find((platform) => platform.name === "x")?.link ?? "#"}
               target="_blank"
               rel="noreferrer"
               className="font-medium underline underline-offset-4"

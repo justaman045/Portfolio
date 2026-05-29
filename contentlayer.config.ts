@@ -17,6 +17,7 @@ export default makeSource({
   mdx: {
     esbuildOptions(options) {
       options.target = "esnext";
+      options.jsxDev = false;
       return options;
     },
     remarkPlugins: [[remarkGfm], [remarkMath]],
@@ -33,7 +34,7 @@ export default makeSource({
         },
       ],
       [
-        rehypePrettyCode,
+        rehypePrettyCode as any,
         {
           // prepacked themes
           // https://github.com/shikijs/shiki/blob/main/docs/themes.md
@@ -57,10 +58,5 @@ export default makeSource({
         },
       ],
     ],
-  },
-  onSuccess: async (data) => {
-    // write the data to a file, so we can use it in search
-    const { allDocuments } = await data();
-    console.log("allDocuments", allDocuments.length);
   },
 });

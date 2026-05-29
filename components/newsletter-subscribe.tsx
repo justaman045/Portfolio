@@ -40,8 +40,9 @@ const NewsletterSubscribe = ({
     },
   });
 
+  const { isSubmitting } = form.formState;
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values.email);
     const response = await fetch("/newsletter", {
       method: "POST",
       headers: {
@@ -93,8 +94,8 @@ const NewsletterSubscribe = ({
                   </FormItem>
                 )}
               />
-              <Button type="submit" variant="secondary">
-                <Mail className="mr-2 h-4 w-4" /> {buttonText}
+              <Button type="submit" variant="secondary" disabled={isSubmitting}>
+                <Mail className="mr-2 h-4 w-4" /> {isSubmitting ? "Subscribing..." : buttonText}
               </Button>
             </form>
           </Form>

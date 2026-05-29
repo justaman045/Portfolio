@@ -7,16 +7,15 @@ import { Tweet } from "react-tweet";
 import { NewsletterCTA } from "./newsletter-cta";
 import { YouTubeVideo } from "./youtube-video";
 
-function CustomLink(props: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
-  const { href } = props;
+function CustomLink({ href, ...rest }: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
   const isExternalLink = href && href.startsWith("http");
 
   if (isExternalLink) {
-    return <a target="_blank" href={href} rel="noopener noreferrer" {...props} />;
+    return <a target="_blank" href={href} rel="noopener noreferrer" {...rest} />;
   }
   return (
-    //@ts-expect-error
-    <Link href={href} />
+    // Link expects `href` to be a known route; MDX can pass arbitrary paths
+    <Link href={href!} {...rest} />
   );
 }
 
@@ -24,7 +23,7 @@ const components = {
   Image: (props: ImageProps) => <NextImage {...props} />,
   NewsletterCTA,
   YouTubeVideo,
-  // a: CustomLink,
+  a: CustomLink,
   Tweet: (props: TweetProps) => {
     return (
       <div className="not-prose [&>div]:mx-auto">

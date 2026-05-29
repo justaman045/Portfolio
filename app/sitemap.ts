@@ -1,8 +1,8 @@
 import { MetadataRoute } from "next";
 import { allPages, allPosts } from "contentlayer/generated";
 
-import { tagOptions } from "@/lib/content-definitions/post";
 import { BASE_URL } from "@/lib/metadata";
+import { tagOptions } from "@/lib/tag-options";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -18,7 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const pages = allPages
     .filter((page) => page.status === "published")
     .map((page) => ({
-      url: `${BASE_URL}/${page.slug.split("/pages")}`,
+      url: `${BASE_URL}/${page.slug}`,
       lastModified: page.lastUpdatedDate,
     }));
   return [

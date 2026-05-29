@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Rocket } from "lucide-react";
 
 import siteMetadata, { defaultAuthor } from "@/lib/metadata";
-import { cn, debounce } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { AnnouncementBar } from "@/components/announcement-bar";
 import { CommandDialogComponent } from "@/components/command-dialog";
 import { MobileNav } from "@/components/mobile-nav";
@@ -18,37 +18,32 @@ import { siteData } from "@/lib/siteData";
 const SCROLL_OFFSET = 200;
 
 export function Navigation() {
-  const [prevScrollPos, setPrevScrollPos] = useState(0);
+  const prevScrollPos = useRef(0);
   const [visible, setVisible] = useState(true);
 
-  const handleScroll = useCallback(
-    () =>
-      debounce(() => {
-        const currentScrollPos = window.scrollY;
-
-        if ((prevScrollPos > currentScrollPos && prevScrollPos - currentScrollPos > 70) || currentScrollPos < 10) {
-          setVisible(true);
-        } else {
-          setVisible(false);
-        }
-
-        setPrevScrollPos(currentScrollPos);
-      }, 100),
-    [prevScrollPos, setPrevScrollPos, setVisible]
-  );
-
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
+    const handleScroll = () => {
+      const currentScrollPos = window.scrollY;
 
+      if ((prevScrollPos.current > currentScrollPos && prevScrollPos.current - currentScrollPos > 70) || currentScrollPos < 10) {
+        setVisible(true);
+      } else {
+        setVisible(false);
+      }
+
+      prevScrollPos.current = currentScrollPos;
+    };
+
+    window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [prevScrollPos, visible, handleScroll]);
+  }, []);
 
   return (
     <>
       {siteMetadata?.activeAnnouncement && (
         <AnnouncementBar
-          buttonText={siteMetadata.announcement.buttonText as string}
-          link={siteMetadata.announcement.link as string}
+          buttonText={siteMetadata.announcement.buttonText ?? ""}
+          link={siteMetadata.announcement.link ?? ""}
         >
           <Rocket className="mr-2 h-5 w-5" />
           <strong className="mr-1">Launching on DevHunt!</strong> If you like this template, please support me by

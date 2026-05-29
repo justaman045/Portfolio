@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
 
-const API_URL = `${process.env.EMAIL_API_BASE}/subscribe`;
-
 export async function POST(request: Request) {
   const { email } = await request.json();
 
@@ -9,18 +7,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Email is required" }, { status: 400 });
   }
 
+  const apiUrl = `${process.env.EMAIL_API_BASE}/subscribe`;
+
   try {
-    const res = await fetch(API_URL, {
+    const res = await fetch(apiUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8",
-        // Add CORS headers
-        "Access-Control-Allow-Origin": "*", // Replace with the appropriate origin
-        "Access-Control-Allow-Methods": "POST",
-        "Access-Control-Allow-Headers": "Content-Type",
       },
       body: JSON.stringify({
-        api_key: process.env.NEXT_PUBLIC_EMAIL_API_KEY,
+        api_key: process.env.EMAIL_API_KEY,
         email: email,
       }),
     });
@@ -28,8 +24,6 @@ export async function POST(request: Request) {
     if (!res.ok) {
       throw new Error(res.statusText);
     }
-
-    // If your API already includes CORS headers, you may not need the headers here.
 
     return NextResponse.json({ ok: "ok" }, { status: 200 });
   } catch (error: any) {

@@ -6,23 +6,6 @@ import { calculateReadingTime } from "../utils";
 import { Author } from "./author";
 import { Series } from "./series";
 
-export const tagOptions = [
-  "starter",
-  "development",
-  "docs",
-  "freelancing",
-  "opinion",
-  "jamstack",
-  "frontend",
-  "development",
-  "javascript",
-  "typescript",
-  "react",
-  "nextjs",
-  "gatsby",
-  "tailwindcss",
-];
-
 export const Post = defineDocumentType(() => ({
   name: "Post",
   filePathPattern: `posts/**/*.mdx`,
@@ -47,7 +30,7 @@ export const Post = defineDocumentType(() => ({
     },
     tags: {
       type: "list",
-      of: { type: "string", options: tagOptions },
+      of: { type: "string" },
       required: false,
     },
     series: {

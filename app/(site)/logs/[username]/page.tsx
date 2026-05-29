@@ -6,9 +6,9 @@ import { sortByDate } from "@/lib/utils";
 import PostPreview from "@/components/post-preview";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     username: string;
-  };
+  }>;
 }
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -18,7 +18,8 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function Blog({ params }: PageProps) {
+export default async function Blog({ params }: PageProps) {
+  const { username } = await params;
   const posts = allPosts
     .filter((post) => post.status === "published")
     .filter((post) => post.username === defaultAuthor.handle)
@@ -27,7 +28,7 @@ export default function Blog({ params }: PageProps) {
   return (
     <div className="container mb-4">
       <div className="prose mx-auto max-w-5xl dark:prose-invert prose-headings:font-heading prose-headings:font-bold prose-headings:leading-tight hover:prose-a:text-accent-foreground prose-a:prose-headings:no-underline">
-        <h1 className="mt-0">Latest Posts by {params.username}</h1>
+        <h1 className="mt-0">Latest Posts by {username}</h1>
         <hr className="my-4" />
         <div className="grid grid-flow-row gap-2">
           {posts.map((post) => (

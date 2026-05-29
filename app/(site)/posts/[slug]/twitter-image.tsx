@@ -1,4 +1,4 @@
-import { ImageResponse } from "next/server";
+import { ImageResponse } from "next/og";
 import { allPosts } from "contentlayer/generated";
 import { format, parseISO } from "date-fns";
 
@@ -15,11 +15,12 @@ export const size = {
 export const contentType = "image/png";
 
 // Image generation
-export default async function Image({ params }: { params: { slug: string } }) {
-  const post = await allPosts.find((post) => post.slug === params.slug);
+export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const post = await allPosts.find((post) => post.slug === slug);
 
   if (!post) {
-    return {};
+    return new ImageResponse(<div style={{ fontSize: 48 }}>Not Found</div>, { ...size });
   }
 
   const date = post.lastUpdatedDate || post.publishedDate;

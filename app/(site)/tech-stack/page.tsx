@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import { format, parseISO } from "date-fns";
-import { AlertTriangle } from "lucide-react";
 
 import { hardware, software, tools } from "@/lib/uses-data";
 
@@ -32,11 +31,15 @@ export default async function SocialPage() {
         <hr className="my-4" />
         <h2>Softwares</h2>
         <ul>
-          {software.map((item) => (
-            <li key={item.href}>
-              <a href={item.href} target="_blank">
-                {item.title}
-              </a>
+          {software.map((item, i) => (
+            <li key={item.title + i}>
+              {item.href ? (
+                <a href={item.href} target="_blank" rel="noopener noreferrer">
+                  {item.title}
+                </a>
+              ) : (
+                <span>{item.title}</span>
+              )}
             </li>
           ))}
         </ul>

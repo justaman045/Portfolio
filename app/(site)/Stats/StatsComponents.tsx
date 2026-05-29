@@ -1,212 +1,204 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
-
 import siteMetadata from "@/lib/metadata";
 
-// -----------Dev----------------------------
-export async function getDevProfile(): Promise<any> {
+type PlatformStats = {
+  url: string;
+  platformName: string;
+  followers?: number | string;
+  numberOfArticles?: number | string;
+};
+
+type CodingStats = {
+  username: string;
+  public_repo: number;
+  followers?: number;
+  platform: string;
+};
+
+async function fetchJson<T>(url: string, init?: RequestInit): Promise<T | null> {
   try {
-    const followersResponse: AxiosResponse<any> = await axios.get("https://dev.to/api/followers/users?per_page=1000", {
-      headers: {
-        api_key: process.env.devto_api_key,
-      },
+    const response = await fetch(url, {
+      ...init,
+      next: { revalidate: 3600 },
     });
 
-    const articlesResponse: AxiosResponse<any> = await axios.get(
-      `https://dev.to/api/articles?username=${siteMetadata.username}`
-    );
-
-    const devtoFollowers = JSON.stringify(followersResponse.data.length);
-    const devtoArticles = JSON.stringify(articlesResponse.data.length);
-
-    return {
-      url: `https://dev.to/${siteMetadata.username}`,
-      numberOfArticles: devtoArticles,
-      followers: devtoFollowers,
-      platformName: "Dev.to",
-    };
-  } catch (error: any) {
-    console.error("Error fetching Dev.to data:", error.response?.data || error.message || error);
-  }
-}
-// -----------Dev----------------------------
-
-// ----------------------------------------------------------Hashnode-------------------------------------------------
-interface GraphQLRequestProps {
-  username?: string;
-  token?: string;
-}
-
-const graphqlEndpoint = "https://gql.hashnode.com/";
-const token = process.env.hashnode_api_key; // Replace with your actual Hashnode API token
-
-export const getUserData = async ({ username, token }: GraphQLRequestProps): Promise<any | AxiosError> => {
-  const query = `
-    query User {
-        user(username: "justaman045") {
-            followersCount
-            publications(first: 50) {
-                edges {
-                    node {
-                        url
-                        posts(first: 20) {
-                            totalDocuments
-                        }
-                    }
-                }
-            }
+    if (!response.ok) {
+      console.error(`Failed to fetch ${url}: ${response.status}`);
+      return null;
     }
-}
 
-`;
-
-  const variables = {
-    username: username,
-  };
-
-  const headers = {
-    Authorization: token,
-  };
-
-  try {
-    const response = await axios.post<any>(graphqlEndpoint, { query, variables }, { headers });
-    // console.log(response.data)
-    return {
-      url: response.data.data.user.publications.edges[0].node.url,
-      followers: response.data.data.user.followersCount,
-      numberOfArticles: response.data.data.user.publications.edges[0].node.posts.totalDocuments,
-      platformName: "Hashnode",
-    };
+    return (await response.json()) as T;
   } catch (error) {
-    return error as AxiosError;
+    console.error(`Failed to fetch ${url}:`, error);
+    return null;
   }
-};
-// ----------------------------------------------------------Hashnode-------------------------------------------------
-
-// ----------------------------------------------------------ConvertKit-------------------------------------------------
-interface Subscriber {
-  id: string;
-  created_at: string;
-  email_address: string;
-  name: string;
-  fields: Record<string, any>;
 }
 
-interface ConvertKitResponse {
-  total_subscribers: number;
-  subscribers: Subscriber[];
+export async function getDevProfile(): Promise<PlatformStats | null> {
+  const articles = await fetchJson<unknown[]>(
+    `https://dev.to/api/articles?username=${encodeURIComponent(siteMetadata.username)}`
+  );
+
+  const apiKey = process.env.DEVTO_API_KEY;
+  const followers = apiKey
+    ? await fetchJson<unknown[]>("https://dev.to/api/followers/users?per_page=1000", {
+        headers: { "api-key": apiKey },
+      })
+    : null;
+
+  return {
+    url: `https://dev.to/${siteMetadata.username}`,
+    numberOfArticles: articles?.length ?? 0,
+    followers: followers?.length ?? "private",
+    platformName: "Dev.to",
+  };
 }
 
-const apiSecret = process.env.convertKit_api_key;
-export const fetchSubscribers = async (): Promise<any | AxiosError> => {
-  const apiUrl = "https://api.convertkit.com/v3/subscribers";
+export async function getHashnodeData(): Promise<PlatformStats | null> {
+  const apiKey = process.env.HASHNODE_API_KEY;
 
-  const config = {
+  if (!apiKey) {
+    return null;
+  }
+
+  const query = `
+    query User($username: String!) {
+      user(username: $username) {
+        followersCount
+        publications(first: 50) {
+          edges {
+            node {
+              url
+              posts(first: 20) {
+                totalDocuments
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  const data = await fetchJson<{
+    data?: {
+      user?: {
+        followersCount?: number;
+        publications?: {
+          edges?: Array<{
+            node?: {
+              url?: string;
+              posts?: { totalDocuments?: number };
+            };
+          }>;
+        };
+      };
+    };
+  }>("https://gql.hashnode.com/", {
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: apiKey,
     },
-    params: {
-      api_secret: apiSecret,
-    },
-  };
+    body: JSON.stringify({ query, variables: { username: siteMetadata.username } }),
+  });
 
-  try {
-    const response = await axios.get<ConvertKitResponse>(apiUrl, config);
-    return {
-      url: "https://justaman045.hashnode.dev/newsletter",
-      followers: response.data.total_subscribers,
-      platformName: "ConvertKit",
-    };
-  } catch (error) {
-    return error as AxiosError;
+  const publication = data?.data?.user?.publications?.edges?.[0]?.node;
+
+  if (!data?.data?.user || !publication) {
+    return null;
   }
-};
 
-// Example usage
-// ----------------------------------------------------------ConvertKit-------------------------------------------------
+  return {
+    url: publication.url ?? `https://${siteMetadata.username}.hashnode.dev`,
+    followers: data.data.user.followersCount ?? 0,
+    numberOfArticles: publication.posts?.totalDocuments ?? 0,
+    platformName: "Hashnode",
+  };
+}
 
-// -----------------------------------------------------------Writing Platforms-----------------------------------------
+export async function fetchSubscribers(): Promise<PlatformStats | null> {
+  const apiSecret = process.env.CONVERTKIT_API_KEY;
+  const newsletterUrl = siteMetadata.newsletterUrl ?? defaultNewsletterUrl;
+
+  if (!apiSecret) {
+    return {
+      url: newsletterUrl,
+      followers: "private",
+      platformName: "Newsletter",
+    };
+  }
+
+  const params = new URLSearchParams({ api_secret: apiSecret });
+  const data = await fetchJson<{ total_subscribers?: number }>(
+    `https://api.convertkit.com/v3/subscribers?${params.toString()}`
+  );
+
+  return {
+    url: newsletterUrl,
+    followers: data?.total_subscribers ?? 0,
+    platformName: "Newsletter",
+  };
+}
+
+const defaultNewsletterUrl = "https://justaman045.vercel.app";
 
 export async function blogginDetails() {
-  const hashnodeData = await getUserData({ username: siteMetadata.username });
-  const devProfile = await getDevProfile();
-  const subscribersData = await fetchSubscribers();
-  return [hashnodeData, devProfile, subscribersData];
+  const details = await Promise.all([getHashnodeData(), getDevProfile(), fetchSubscribers()]);
+  return details.filter(Boolean) as PlatformStats[];
 }
 
-// -----------------------------------------------------------Writing Platforms-----------------------------------------
+export const getGitLabData = async (): Promise<CodingStats | null> => {
+  const accessToken = process.env.GITLAB_API_KEY;
 
-// ----------------------------------------------------------GitLab-------------------------------------------------
-
-const accessToken = process.env.gitlab_api_key;
-const apiUrl = "https://gitlab.com/api/v4";
-
-export const getGitLabData = async (): Promise<any | AxiosError> => {
-  try {
-    // Fetch user information
-    const userApiUrl = `${apiUrl}/users/coderaman07/projects`;
-    const userResponse = await axios.get<any>(userApiUrl, {
-      headers: {
-        "PRIVATE-TOKEN": accessToken,
-      },
-    });
-    const user = userResponse.data;
-
-    return { username: "gitlab.com/coderaman07", public_repo: user.length, platform: "GitLab" };
-  } catch (error) {
-    return error as AxiosError;
+  if (!accessToken) {
+    return null;
   }
+
+  const projects = await fetchJson<unknown[]>("https://gitlab.com/api/v4/users/coderaman07/projects", {
+    headers: {
+      "PRIVATE-TOKEN": accessToken,
+    },
+  });
+
+  return { username: "gitlab.com/coderaman07", public_repo: projects?.length ?? 0, platform: "GitLab" };
 };
 
-// ----------------------------------------------------------GitLab-------------------------------------------------
+export const fetchGithubData = async (username: string): Promise<CodingStats | null> => {
+  const user = await fetchJson<{ public_repos: number; followers: number }>(`https://api.github.com/users/${username}`);
 
-// ----------------------------------------------------------Github-------------------------------------------------
-
-export const fetchGithubData = async (username: string) => {
-  try {
-    // Fetch user details (including followers count)
-    const userResponse = await axios.get(`https://api.github.com/users/${username}`);
-    const { public_repos, followers } = userResponse.data;
-    return {
-      username: `github.com/${siteMetadata.username}`,
-      public_repo: public_repos,
-      followers: followers,
-      platform: "GitHub",
-    };
-  } catch (error: any) {
-    console.error("Error fetching GitHub data:", error.response?.data || error.message || error);
+  if (!user) {
+    return null;
   }
+
+  return {
+    username: `github.com/${siteMetadata.username}`,
+    public_repo: user.public_repos,
+    followers: user.followers,
+    platform: "GitHub",
+  };
 };
-
-// ----------------------------------------------------------Github-------------------------------------------------
-
-// ----------------------------------------------------------Coding-------------------------------------------------
 
 export async function codingData() {
-  const githubData = await fetchGithubData(siteMetadata.username);
-  const gitlabData = await getGitLabData();
-  return [githubData, gitlabData];
+  const details = await Promise.all([fetchGithubData(siteMetadata.username), getGitLabData()]);
+  return details.filter(Boolean) as CodingStats[];
 }
 
-// ----------------------------------------------------------Coding-------------------------------------------------
+export async function getInstaData() {
+  const accounts = [
+    {
+      id: "7150081325048019",
+      token: process.env.LETHAL_ASTRA_API_KEY,
+    },
+    {
+      id: "24932505826394447",
+      token: process.env.ONESTAY_CONSISTENT_API_KEY,
+    },
+  ].filter((account) => account.token);
 
-// ----------------------------------------------------------Instagram-------------------------------------------------
-export async function getInstaData(): Promise<any> {
-  try {
-    const lethal_astra: AxiosResponse<any> = await axios.get(
-      `https://graph.instagram.com/7150081325048019?fields=media_count,username&access_token=${process.env.lethal_astra_api_key}`
-    );
-
-    const OneStayConsistent: AxiosResponse<any> = await axios.get(
-      `https://graph.instagram.com/24932505826394447?fields=media_count,username&access_token=${process.env.OnestayConsistent_apiKey}`
-    );
-
-    const lethal_astra_data = lethal_astra.data;
-    const OneStayConsistent_data = OneStayConsistent.data;
-    if (lethal_astra.status == 200 && OneStayConsistent.status == 200) {
-      return [lethal_astra_data, OneStayConsistent_data];
-    }
-  } catch (error: any) {
-    console.error("Error fetching Instagram data:", error.response?.data || error.message || error);
-  }
+  return Promise.all(
+    accounts.map((account) =>
+      fetchJson<{ media_count: number; username: string }>(
+        `https://graph.instagram.com/${account.id}?fields=media_count,username&access_token=${account.token}`
+      )
+    )
+  );
 }
-// ----------------------------------------------------------Instagram-------------------------------------------------

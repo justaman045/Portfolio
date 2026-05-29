@@ -1,60 +1,60 @@
-# Zenith
+# Aman Ojha Portfolio
 
-Welcome to Zenith, a personal project to organize and record all aspects of your life, including accounts, blogs, and various activities. This project is built using Tailwind CSS and Next.js, providing a sleek and responsive user interface. Whether you're documenting your life journey, managing accounts, or showcasing your blogs, Zenith has got you covered.
+Personal portfolio and engineering blog for Aman Ojha (`justaman045`), an SDET, Flutter developer, and full-stack engineer building automation systems, SaaS products, AI tooling, and cross-platform apps.
 
-## Features
+Live site: https://justaman045.vercel.app
 
-- **Account Management:** Keep a record of all your accounts in one place. Easily update and manage your login information.
+## What This Repo Contains
 
-- **Blog Listing:** Document your thoughts and experiences with the built-in blog feature. Categorize and organize your blogs effortlessly.
-
-- **YouTube Videos:** Seamlessly integrate your YouTube videos into the platform, making it a centralized hub for your content.
-
-- **Professional Work:** Showcase your professional experience, such as your role as a software developer at Infosys. Highlight your skills, projects, and achievements.
-
-- **Current Project:** Keep your audience informed about your current project. In your case, share insights into your work with Selenium and Java.
-
-- **Video Editing:** Highlight your passion for video editing. Mention your expertise in creating professional videos for YouTubers.
+- Portfolio pages for profile, projects, tech stack, posts, tags, and social stats.
+- MDX/Markdown publishing pipeline powered by Contentlayer.
+- Project catalog highlighting Agentic TODO, Finance Control, Assistant, SaaS Waitlist, CodeitDown, Instagram Content Analyzer, and Job Application Tracker.
+- SEO metadata, RSS feed, Open Graph/Twitter images, sitemap, and robots routes.
+- Optional analytics and newsletter integrations.
 
 ## Tech Stack
 
-- **Tailwind CSS:** A utility-first CSS framework that helps in building modern and responsive user interfaces.
+- Next.js App Router
+- React
+- TypeScript
+- Tailwind CSS
+- Contentlayer + MDX
+- Radix UI primitives
+- Vercel Analytics
 
-- **Next.js:** A React framework for building static and dynamic web applications. It enables server-side rendering and a great developer experience.
+## Local Development
 
-## Getting Started
+```bash
+npm install
+cp .env.example .env.local
+npm run dev
+```
 
-To get started with Zenith, follow these steps:
+Open `http://localhost:3000`.
 
-1. Clone the repository:
+## Scripts
 
-   ```bash
-   git clone https://github.com/your-username/zenith.git
-   ```
+```bash
+npm run dev      # start local dev server
+npm run build    # build Contentlayer output and Next.js app
+npm run start    # serve production build
+npm run lint     # run ESLint
+npm run format   # format source/content files
+```
 
-2. Install dependencies:
+## Environment
 
-   ```bash
-   cd zenith
-   npm install
-   ```
+The app works without private API keys. Optional integrations are documented in `.env.example`.
 
-3. Start the development server:
+Do not commit `.env`, `.env.local`, or API keys. A previously tracked local env file was removed from this repo; rotate any exposed keys before using them again.
 
-   ```bash
-   npm run dev
-   ```
+## Security Notes
 
-4. Open your browser and navigate to `http://localhost:3000` to see Zenith in action.
-
-## Contribution
-
-If you would like to contribute to Zenith, feel free to open issues, submit pull requests, or provide feedback. Your contributions are highly appreciated.
+- `poweredByHeader` is disabled in `next.config.js`.
+- Private stats integrations use server-only env vars.
+- External links should include `rel="noreferrer noopener"` when opened in a new tab.
+- Keep `npm audit` part of dependency maintenance. Contentlayer currently has stale transitive audit findings, so replacing or upgrading the content pipeline should be considered during a future larger modernization.
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE.md).
-
----
-
-Thank you for using Zenith! If you have any questions or need assistance, feel free to reach out.
+MIT

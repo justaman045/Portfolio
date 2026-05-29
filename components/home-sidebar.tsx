@@ -33,11 +33,11 @@ export function Sidebar({ className, ...props }: CardProps) {
         </CardContent>
         <Separator />
         <CardFooter>
-          <Link href={`/logs/${defaultAuthor.handle.slice(1)}`}>
-            <Button variant="ghost" className="w-full" disabled>
+          <Button variant="ghost" className="w-full" asChild>
+            <Link href={`/logs/${defaultAuthor.handle.slice(1)}`}>
               {defaultAuthor.name}&apos;s diaries <ArrowRight className="mr-2 h-4 w-4" />
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </CardFooter>
       </Card>
       <Card className={cn(className)} {...props}>

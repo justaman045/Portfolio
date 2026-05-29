@@ -2,8 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { DialogProps } from "@radix-ui/react-alert-dialog";
-import { File, Github, Laptop, Mail, Moon, Sun, Twitter } from "lucide-react";
+import { AtSign, File, GitBranch, Laptop, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
 import siteMetadata, { defaultAuthor } from "@/lib/metadata";
@@ -20,7 +19,7 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 
-export function CommandDialogComponent({ ...props }: DialogProps) {
+export function CommandDialogComponent({ ...props }: React.ComponentPropsWithoutRef<typeof Button>) {
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const { setTheme } = useTheme();
@@ -105,8 +104,8 @@ export function CommandDialogComponent({ ...props }: DialogProps) {
                 );
               }}
             >
-              <Twitter className="mr-2 h-4 w-4" />
-              <span>Twitter</span>
+              <AtSign className="mr-2 h-4 w-4" />
+              <span>X</span>
             </CommandItem>
             <CommandItem
               onSelect={() => {
@@ -115,8 +114,8 @@ export function CommandDialogComponent({ ...props }: DialogProps) {
                 );
               }}
             >
-              <Github className="mr-2 h-4 w-4" />
-              <span>Github</span>
+              <GitBranch className="mr-2 h-4 w-4" />
+              <span>GitHub</span>
             </CommandItem>
           </CommandGroup>
           <CommandSeparator />

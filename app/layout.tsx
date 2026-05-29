@@ -43,8 +43,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <BackTopButton />
           <Toaster />
         </ThemeProvider>
+        <Analytics />
       </body>
-      <Analytics />
     </html>
   );
 }

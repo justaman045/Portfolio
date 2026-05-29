@@ -6,23 +6,25 @@ import { format, parseISO } from "date-fns";
 import { Mdx } from "@/components/mdx";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
-async function getPageFromParams(params: PageProps["params"]) {
+type PageParams = Awaited<PageProps["params"]>;
+
+async function getPageFromParams(params: PageParams) {
   const page = allPages.find((page) => page.slug === params.slug);
 
   if (!page) {
-    null;
+    return null;
   }
 
   return page;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const page = await getPageFromParams(params);
+  const page = await getPageFromParams(await params);
 
   if (!page) {
     return {};
@@ -34,14 +36,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export async function generateStaticParams(): Promise<PageProps["params"][]> {
+export async function generateStaticParams(): Promise<PageParams[]> {
   return allPages.map((page) => ({
     slug: page.slug,
   }));
 }
 
 export default async function PagePage({ params }: PageProps) {
-  const page = await getPageFromParams(params);
+  const page = await getPageFromParams(await params);
 
   if (!page || (process.env.NODE_ENV === "development" && page.status !== "published")) {
     notFound();

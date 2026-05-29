@@ -17,16 +17,18 @@ import { SocialShare } from "@/components/social-share";
 import { TableOfContents } from "@/components/table-of-contents";
 
 interface PostProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
-async function getPostFromParams(params: PostProps["params"]): Promise<any> {
+type PostParams = Awaited<PostProps["params"]>;
+
+async function getPostFromParams(params: PostParams): Promise<any> {
   const post = allPosts.find((post) => post.slug === params.slug);
 
   if (!post) {
-    null;
+    return null;
   }
 
   if (post?.series) {
@@ -50,7 +52,7 @@ async function getPostFromParams(params: PostProps["params"]): Promise<any> {
 }
 
 export async function generateMetadata({ params }: PostProps): Promise<Metadata> {
-  const post = await getPostFromParams(params);
+  const post = await getPostFromParams(await params);
 
   if (!post) {
     return {};
@@ -64,14 +66,14 @@ export async function generateMetadata({ params }: PostProps): Promise<Metadata>
   };
 }
 
-export async function generateStaticParams(): Promise<PostProps["params"][]> {
+export async function generateStaticParams(): Promise<PostParams[]> {
   return allPosts.map((post) => ({
-    slug: `/posts/${post._raw.flattenedPath}`,
+    slug: post.slug,
   }));
 }
 
 export default async function PostPage({ params }: PostProps) {
-  const post = await getPostFromParams(params);
+  const post = await getPostFromParams(await params);
 
   if (!post || (process.env.NODE_ENV === "development" && post.status !== "published")) {
     notFound();
@@ -121,10 +123,8 @@ export default async function PostPage({ params }: PostProps) {
             </svg>
           </li>
 
-          <li>
-            <Link href="#" className="block transition hover:text-muted-foreground/70">
-              {post.title}
-            </Link>
+          <li className="block transition hover:text-muted-foreground/70">
+            {post.title}
           </li>
         </ol>
       </nav>

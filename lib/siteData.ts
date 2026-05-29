@@ -5,7 +5,8 @@ type siteData = {
 };
 
 export const siteData: siteData = {
-  HomePageText: "Developing cool Products and Content for the world.",
-  SubtitleText: "I'm Amy. Frontend engineer writing code and blog on the internet.",
+  HomePageText: "SDET, Flutter Builder, and Full-Stack Engineer.",
+  SubtitleText:
+    "I'm Aman Ojha. I build automation systems, SaaS products, AI tools, and cross-platform apps with Java, Flutter, Next.js, and Firebase.",
   resumeUrl: "https://drive.google.com/file/d/1ts2YTNAuZh7qPunbQElK3fM4SwpfCmhb/view?usp=sharing",
 };

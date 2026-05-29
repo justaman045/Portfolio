@@ -1,41 +1,29 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { allPosts, Post } from "contentlayer/generated";
+import { allPosts } from "contentlayer/generated";
 
 import { sortByDate } from "@/lib/utils";
 import PostPreview from "@/components/post-preview";
 
-// Get sorted articles from the contentlayer
-async function getSortedArticles(): Promise<Post[]> {
-  let articles = await allPosts;
-
-  articles = articles.filter((article: Post) => article.status === "published");
-
-  return articles.sort((a: Post, b: Post) => {
-    if (a.publishedDate && b.publishedDate) {
-      return new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime();
-    }
-    return 0;
-  });
-}
-
 // Dynamic metadata for the page
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+
   return {
-    title: `All posts in ${params.slug}`,
-    description: `All posts in ${params.slug}`,
+    title: `All posts in ${slug}`,
+    description: `All posts in ${slug}`,
   };
 }
 
-export default async function TagPage({ params }: { params: { slug: string } }) {
-  const tag = params.slug;
+export default async function TagPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug: tag } = await params;
 
   const posts = allPosts
     .filter((post) => post.status === "published")
     .filter((post) => post.tags?.includes(tag))
     .sort(sortByDate);
 
-  if (!posts) {
+  if (posts.length === 0) {
     notFound();
   }
 

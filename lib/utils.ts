@@ -48,5 +48,3 @@ export function debounce<T extends (...args: any[]) => any>(func: T, wait: numbe
 
 export const sortByDate = (a: Post, b: Post) =>
   compareDesc(new Date(a.lastUpdatedDate || a.publishedDate), new Date(b.lastUpdatedDate || b.publishedDate));
-
-export const pageCount = (number: number) => Math.ceil(number / siteMetadata.postsPerPage);

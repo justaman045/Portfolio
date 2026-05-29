@@ -5,8 +5,8 @@ import siteMetadata from "@/lib/metadata";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Tags",
-    description: `All tags in ${siteMetadata.title}`,
+    title: "Instagram",
+    description: `Instagram profiles managed by ${siteMetadata.title}`,
   };
 }
 
