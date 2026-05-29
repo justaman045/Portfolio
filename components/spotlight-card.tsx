@@ -53,11 +53,20 @@ export const SpotlightCard = ({ title, description, mediaSrc, mediaType, href }:
     <div
       ref={divRef}
       onClick={() => window.open(href, "_blank")}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          window.open(href, "_blank");
+        }
+      }}
       onMouseMove={handleMouseMove}
       onFocus={handleFocus}
       onBlur={handleBlur}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      role="link"
+      tabIndex={0}
+      aria-label={`View ${title} project`}
       className="relative flex cursor-pointer flex-col justify-start overflow-hidden rounded-md border border-slate-200 bg-gradient-to-r from-slate-100  to-slate-50 shadow-md dark:border-slate-800 dark:from-slate-900 dark:to-slate-950"
     >
       <div
@@ -77,7 +86,7 @@ export const SpotlightCard = ({ title, description, mediaSrc, mediaType, href }:
             <source src="/project-garden.mp4" type="video/mp4" />
           </video>
         ) : (
-          <Image src={mediaSrc} alt={title} width={960} height={540} className="m-0 p-0" />
+          <Image src={mediaSrc} alt={title} width={960} height={540} sizes="(max-width: 768px) 100vw, 50vw" className="m-0 p-0" />
         )}
       </AspectRatio>
       <div className="p-6">

@@ -74,7 +74,8 @@ export function Navigation() {
                     width={40}
                     height={40}
                     src="/avatar.jpeg"
-                    alt={defaultAuthor.name}
+                    alt="Aman Ojha"
+                    priority
                   />
                 </Link>
               </div>

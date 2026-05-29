@@ -1,12 +1,14 @@
 import { MetadataRoute } from "next";
-import { allPages, allPosts } from "contentlayer/generated";
 
 import { BASE_URL } from "@/lib/metadata";
+import { getAllPages, getAllPosts } from "@/lib/mdx";
 import { tagOptions } from "@/lib/tag-options";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
-  const loadedPosts = allPosts.filter((post) => post.status === "published");
+  const allPostsData = getAllPosts();
+  const allPagesData = getAllPages();
+  const loadedPosts = allPostsData.filter((post) => post.status === "published");
   const tags = tagOptions.map((tag) => ({
     url: `${BASE_URL}/tags/${tag}`,
     lastModified: now,
@@ -15,7 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${BASE_URL}/posts/${post.slug}`,
     lastModified: post.lastUpdatedDate || post.publishedDate,
   }));
-  const pages = allPages
+  const pages = allPagesData
     .filter((page) => page.status === "published")
     .map((page) => ({
       url: `${BASE_URL}/${page.slug}`,
@@ -31,7 +33,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
     },
     {
-      url: `${BASE_URL}/uses`,
+      url: `${BASE_URL}/tech-stack`,
       lastModified: now,
     },
     {

@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { allPosts } from "contentlayer/generated";
 
+import { getAllPosts } from "@/lib/mdx";
 import { sortByDate } from "@/lib/utils";
 import PostPreview from "@/components/post-preview";
 
@@ -18,7 +18,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function TagPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug: tag } = await params;
 
-  const posts = allPosts
+  const allPostsData = getAllPosts();
+  const posts = allPostsData
     .filter((post) => post.status === "published")
     .filter((post) => post.tags?.includes(tag))
     .sort(sortByDate);

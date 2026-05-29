@@ -15,7 +15,7 @@ const spaceGrotesk = Space_Grotesk({
   variable: "--font-space",
   weight: ["400", "600", "700"],
 });
-const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-inter" });
+const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-inter", weight: ["400"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),

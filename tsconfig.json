@@ -26,9 +26,6 @@
     "paths": {
       "@/*": [
         "./*"
-      ],
-      "contentlayer/generated": [
-        "./.contentlayer/generated"
       ]
     },
     "target": "ES2022"
@@ -38,7 +35,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".contentlayer/generated",
+
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [

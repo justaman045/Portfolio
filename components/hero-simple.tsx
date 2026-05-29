@@ -1,6 +1,3 @@
-"use client";
-
-import * as React from "react";
 import Image from "next/image";
 
 import { defaultAuthor } from "@/lib/metadata";
@@ -22,7 +19,9 @@ export function HeroSimple({ title, subtitle }: HeroProps) {
           width={40}
           height={40}
           src="/avatar.jpeg"
-          alt={defaultAuthor.name}
+          alt="Aman Ojha"
+          priority
+          sizes="40px"
         />
         <p className="ml-2 font-bold text-muted-foreground">{defaultAuthor.handle}</p>
       </div>

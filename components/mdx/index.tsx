@@ -1,8 +1,14 @@
 import NextImage, { ImageProps } from "next/image";
 import Link from "next/link";
-import { useMDXComponent } from "next-contentlayer/hooks";
+import { compileMDX } from "next-mdx-remote/rsc";
 import type { TweetProps } from "react-tweet";
 import { Tweet } from "react-tweet";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeKatex from "rehype-katex";
+import rehypePrettyCode from "rehype-pretty-code";
+import rehypeSlug from "rehype-slug";
+import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
 
 import { NewsletterCTA } from "./newsletter-cta";
 import { YouTubeVideo } from "./youtube-video";
@@ -14,7 +20,6 @@ function CustomLink({ href, ...rest }: React.AnchorHTMLAttributes<HTMLAnchorElem
     return <a target="_blank" href={href} rel="noopener noreferrer" {...rest} />;
   }
   return (
-    // Link expects `href` to be a known route; MDX can pass arbitrary paths
     <Link href={href!} {...rest} />
   );
 }
@@ -37,8 +42,43 @@ interface MdxProps {
   code: string;
 }
 
-export function Mdx({ code }: MdxProps) {
-  const Component = useMDXComponent(code);
-  // TODO: Figure out how to type this
-  return <Component components={components as any} />;
+export async function Mdx({ code }: MdxProps) {
+  const { content } = await compileMDX({
+    source: code,
+    components: components as any,
+    options: {
+      mdxOptions: {
+        remarkPlugins: [remarkGfm, remarkMath],
+        rehypePlugins: [
+          rehypeKatex,
+          rehypeSlug,
+          [
+            rehypeAutolinkHeadings,
+            {
+              behavior: "wrap",
+              properties: {
+                className: ["anchor-heading-link"],
+              },
+            },
+          ],
+          [
+            rehypePrettyCode,
+            {
+              theme: "github-dark",
+              onVisitLine(node: any) {
+                if (node.children.length === 0) {
+                  node.children = [{ type: "text", value: " " }];
+                }
+                node.properties.className = ["line"];
+              },
+              onVisitHighlightedLine(node: any) {
+                node.properties.className?.push("line--highlighted");
+              },
+            },
+          ],
+        ],
+      },
+    },
+  });
+  return <>{content}</>;
 }

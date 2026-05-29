@@ -88,7 +88,7 @@ const NewsletterSubscribe = ({
                 render={({ field }) => (
                   <FormItem className="flex-auto">
                     <FormControl>
-                      <Input type="email" placeholder={siteMetadata.email} {...field} />
+                      <Input type="email" placeholder="your@email.com" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

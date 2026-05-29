@@ -1,8 +1,8 @@
 import { clsx, type ClassValue } from "clsx";
-import { Post } from "contentlayer/generated";
 import { compareDesc } from "date-fns";
 import { twMerge } from "tailwind-merge";
 
+import type { PostDoc } from "./mdx";
 import siteMetadata from "./metadata";
 
 export function cn(...inputs: ClassValue[]) {
@@ -19,8 +19,8 @@ export const calculateReadingTime = (text: string): number => {
   return readTime;
 };
 
-export const getTagsWithCount = (posts: Post[]) =>
-  posts.reduce((acc: any, post: Post) => {
+export const getTagsWithCount = (posts: PostDoc[]) =>
+  posts.reduce((acc: any, post: PostDoc) => {
     post.tags?.forEach((tag: any) => {
       if (acc[tag]) {
         acc[tag] += 1;
@@ -46,5 +46,5 @@ export function debounce<T extends (...args: any[]) => any>(func: T, wait: numbe
   };
 }
 
-export const sortByDate = (a: Post, b: Post) =>
+export const sortByDate = (a: PostDoc, b: PostDoc) =>
   compareDesc(new Date(a.lastUpdatedDate || a.publishedDate), new Date(b.lastUpdatedDate || b.publishedDate));

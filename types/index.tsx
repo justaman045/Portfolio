@@ -1,5 +1,4 @@
 import { LinkProps } from "next/link";
-import { Post, Series } from "contentlayer/generated";
 
 import { AnnouncementBarProps } from "@/components/announcement-bar";
 
@@ -53,14 +52,21 @@ export type SiteMetaData = {
 
 export type SeriesItem = {
   title: string;
-  slug: Post["slug"];
-  status: Post["status"];
+  slug: string;
+  status: string;
   isCurrent: boolean;
 };
 
-export type PostSeries = Series & { posts: SeriesItem[] };
+export type PostSeriesItem = {
+  title: string;
+  order: number;
+  posts: SeriesItem[];
+};
 
-export type PostWithSeries = Omit<Post, "series"> & { series: PostSeries };
+export type SeriesData = {
+  title: string;
+  order: number;
+};
 
 export type SocialProfile = {
   name: string;

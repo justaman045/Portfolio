@@ -1,13 +1,13 @@
 import Link from "next/link";
-import { Post } from "contentlayer/generated";
 import { format, parseISO } from "date-fns";
 import { CalendarDays, Timer } from "lucide-react";
 
+import type { PostDoc } from "@/lib/mdx";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 
 type PostPreviewProps = {
-  post: Post;
+  post: PostDoc;
 };
 
 const PostPreview = ({ post }: PostPreviewProps) => {

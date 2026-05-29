@@ -1,6 +1,6 @@
 import { Metadata } from "next";
-import { allPosts } from "contentlayer/generated";
 
+import { getAllPosts } from "@/lib/mdx";
 import siteMetadata, { defaultAuthor } from "@/lib/metadata";
 import { sortByDate } from "@/lib/utils";
 import PostPreview from "@/components/post-preview";
@@ -20,7 +20,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function Blog({ params }: PageProps) {
   const { username } = await params;
-  const posts = allPosts
+  const allPostsData = getAllPosts();
+  const posts = allPostsData
     .filter((post) => post.status === "published")
     .filter((post) => post.username === defaultAuthor.handle)
     .sort(sortByDate);

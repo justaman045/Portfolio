@@ -9,9 +9,9 @@ npm run dev                   # http://localhost:3000
 
 ## Build
 ```bash
-npm run build                # contentlayer build → fix-contentlayer-imports.mjs → next build
+npm run build                # NODE_ENV=production next build
 ```
-`fix-contentlayer-imports.mjs` patches `assert { type: 'json' }` → `with { type: 'json' }` in generated index. If contentlayer build fails, check that patch ran.
+MDX content (posts + pages) is loaded at build time via `lib/mdx.ts` using `gray-matter` + `next-mdx-remote/rsc`.
 
 ## Quality
 ```bash
@@ -22,15 +22,12 @@ Pre-commit (husky + lint-staged): `next lint --fix` on `*.{js,jsx,ts,tsx}`, pret
 
 ## Architecture
 - **Next.js 15 App Router**, React 18, TypeScript, Tailwind CSS, shadcn/ui
-- **Contentlayer 0.3.4** — MDX from `content/posts/**/*.mdx` (`Post`) and `content/pages/**/*.mdx` (`Page`). Both have `status: "draft" | "published"`.
-- Generated types: `import { Post } from "contentlayer/generated"` (maps to `.contentlayer/generated`)
-- Import alias: `@/` → root, `contentlayer/generated` → `.contentlayer/generated`
-- Contentlayer output (`.contentlayer/`) is gitignored — must build before typechecking
+- **`lib/mdx.ts`** — MDX data layer: reads `content/posts/**/*.mdx` (`PostDoc`) and `content/pages/**/*.mdx` (`PageDoc`). Both have `status: "draft" | "published"`. Uses `gray-matter` for frontmatter + `next-mdx-remote/rsc` for rendering.
 
 ## Dependencies
 - `overrides` in package.json pin several transitive deps for security (check before adding new ones)
 - `eslint-config-prettier` disables ESLint rules that conflict with Prettier — do not remove
-- esbuildOptions target `"esnext"` in contentlayer config
+- `rehype-pretty-code` and `onVisitLine`/`onVisitHighlightedLine` are `any`-typed with FIXME comments
 
 ## Content
 - Posts: `content/posts/<slug>.mdx`, frontmatter: `title`, `publishedDate`, `status`, optional `tags`, `series`, `author`, `description`

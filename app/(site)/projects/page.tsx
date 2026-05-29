@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { format, parseISO } from "date-fns";
+import { format } from "date-fns";
 import { projects } from "@/lib/projects-data";
 import { SpotlightCard } from "@/components/spotlight-card";
 

@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { allPosts } from "contentlayer/generated";
 
 import siteMetadata from "@/lib/metadata";
+import { getAllPosts } from "@/lib/mdx";
 import { getTagsWithCount } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 
@@ -15,7 +15,8 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function TagsPage() {
-  const posts = allPosts.filter((post) => post.status === "published");
+  const allPostsData = getAllPosts();
+  const posts = allPostsData.filter((post) => post.status === "published");
 
   const tags = getTagsWithCount(posts);
 

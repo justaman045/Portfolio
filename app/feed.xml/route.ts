@@ -1,6 +1,6 @@
-import { allPosts } from "contentlayer/generated";
 import RSS from "rss";
 
+import { getAllPosts } from "@/lib/mdx";
 import siteMetadata, { BASE_URL, defaultAuthor } from "@/lib/metadata";
 
 export async function GET(request: Request) {
@@ -14,7 +14,8 @@ export async function GET(request: Request) {
     pubDate: new Date(),
   });
 
-  allPosts
+  const allPostsData = getAllPosts();
+  allPostsData
     .filter((post) => post.status === "published")
     .map((post) => {
       feed.item({

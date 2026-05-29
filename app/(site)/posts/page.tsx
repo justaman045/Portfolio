@@ -1,7 +1,7 @@
 import { Metadata } from "next";
-import { allPosts } from "contentlayer/generated";
 
 import { defaultAuthor } from "@/lib/metadata";
+import { getAllPosts } from "@/lib/mdx";
 import { sortByDate } from "@/lib/utils";
 import PostPreview from "@/components/post-preview";
 
@@ -13,7 +13,8 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function Blog() {
-  const posts = allPosts.filter((post) => post.status === "published").sort(sortByDate);
+  const allPostsData = getAllPosts();
+  const posts = allPostsData.filter((post) => post.status === "published").sort(sortByDate);
 
   return (
     <div className="container mb-4">

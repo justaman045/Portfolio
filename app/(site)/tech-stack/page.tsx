@@ -47,7 +47,7 @@ export default async function SocialPage() {
         <ul>
           {tools.map((item) => (
             <li key={item.href}>
-              <a href={item.href} target="_blank">
+              <a href={item.href} target="_blank" rel="noopener noreferrer">
                 {item.title}
               </a>
             </li>
@@ -57,7 +57,7 @@ export default async function SocialPage() {
         <ul>
           {hardware.map((item) => (
             <li key={item.href}>
-              <a href={item.href} target="_blank">
+              <a href={item.href} target="_blank" rel="noopener noreferrer">
                 {item.title}
               </a>
             </li>

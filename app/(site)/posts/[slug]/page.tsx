@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { PostSeries, SeriesItem } from "@/types";
-import { allPosts } from "contentlayer/generated";
+import type { SeriesItem, PostSeriesItem } from "@/types";
+import { getAllPosts } from "@/lib/mdx";
 import { format, parseISO } from "date-fns";
 import { Home } from "lucide-react";
 
@@ -25,14 +25,15 @@ interface PostProps {
 type PostParams = Awaited<PostProps["params"]>;
 
 async function getPostFromParams(params: PostParams): Promise<any> {
-  const post = allPosts.find((post) => post.slug === params.slug);
+  const allPostsData = getAllPosts();
+  const post = allPostsData.find((post) => post.slug === params.slug);
 
   if (!post) {
     return null;
   }
 
   if (post?.series) {
-    const seriesPosts: SeriesItem[] = allPosts
+    const seriesPosts: SeriesItem[] = allPostsData
       .filter((p) => p.series?.title === post.series?.title)
       .sort((a, b) => Number(a.series!.order) - Number(b.series!.order))
       .map((p) => {
@@ -44,7 +45,7 @@ async function getPostFromParams(params: PostParams): Promise<any> {
         };
       });
     if (seriesPosts.length > 0) {
-      return { ...post, series: { ...post.series, posts: seriesPosts } as PostSeries };
+      return { ...post, series: { ...post.series, posts: seriesPosts } as PostSeriesItem };
     }
   }
 
@@ -67,7 +68,7 @@ export async function generateMetadata({ params }: PostProps): Promise<Metadata>
 }
 
 export async function generateStaticParams(): Promise<PostParams[]> {
-  return allPosts.map((post) => ({
+  return getAllPosts().map((post) => ({
     slug: post.slug,
   }));
 }
@@ -158,7 +159,7 @@ export default async function PostPage({ params }: PostProps) {
               <PostSeriesBox data={post.series} />
             </div>
           )}
-          <Mdx code={post.body.code} />
+          <Mdx code={post.body.raw} />
           <hr className="my-4" />
           <div className="flex flex-row items-center justify-between">
             {post.tags && (

@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
-import { allPosts } from "contentlayer/generated";
 
+import { getAllPosts } from "@/lib/mdx";
 import { defaultAuthor } from "@/lib/metadata";
 
 export const runtime = "nodejs";
@@ -16,7 +16,7 @@ export const contentType = "image/png";
 // Image generation
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const post = await allPosts.find((post) => post.slug === slug);
+  const post = getAllPosts().find((post) => post.slug === slug);
 
   if (!post) {
     return new ImageResponse(<div style={{ fontSize: 48 }}>Not Found</div>, { ...size });

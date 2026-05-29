@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { allPages } from "contentlayer/generated";
 import { format, parseISO } from "date-fns";
 
+import { getAllPages } from "@/lib/mdx";
 import { Mdx } from "@/components/mdx";
 
 interface PageProps {
@@ -14,7 +14,8 @@ interface PageProps {
 type PageParams = Awaited<PageProps["params"]>;
 
 async function getPageFromParams(params: PageParams) {
-  const page = allPages.find((page) => page.slug === params.slug);
+  const allPagesData = getAllPages();
+  const page = allPagesData.find((page) => page.slug === params.slug);
 
   if (!page) {
     return null;
@@ -37,7 +38,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export async function generateStaticParams(): Promise<PageParams[]> {
-  return allPages.map((page) => ({
+  return getAllPages().map((page) => ({
     slug: page.slug,
   }));
 }
@@ -60,7 +61,7 @@ export default async function PagePage({ params }: PageProps) {
           </time>
         )}
         <hr className="my-4" />
-        <Mdx code={page.body.code} />
+        <Mdx code={page.body.raw} />
       </article>
     </div>
   );

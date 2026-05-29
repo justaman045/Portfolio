@@ -1,15 +1,15 @@
 import Link from "next/link";
-import { PostSeries } from "@/types";
+import { PostSeriesItem } from "@/types";
 
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export type Props = {
-  data: PostSeries;
+  data: PostSeriesItem;
 };
 
 export const PostSeriesBox = ({ data }: Props) => {
-  const currentIndex = data.posts.findIndex((post) => post.isCurrent) + 1;
+  const currentIndex = (data.posts ?? []).findIndex((post) => post.isCurrent) + 1;
 
   return (
     <Card className="mb-4">
