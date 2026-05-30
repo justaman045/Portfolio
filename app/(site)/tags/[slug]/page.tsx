@@ -34,8 +34,8 @@ export default async function TagPage({ params }: { params: Promise<{ slug: stri
         <h1 className="mt-0">All posts in {tag}</h1>
         <hr className="my-4" />
         <div className="grid grid-flow-row gap-2">
-          {posts.map((post) => (
-            <PostPreview post={post} key={post._id} />
+          {posts.map((post, i) => (
+            <PostPreview post={post} key={post._id} index={i} />
           ))}
         </div>
       </div>

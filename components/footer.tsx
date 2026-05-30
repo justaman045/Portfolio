@@ -8,50 +8,49 @@ import { SocialButton } from "@/components/social-button";
 
 const Footer = () => {
   return (
-    <footer className="mx-auto flex max-w-6xl flex-col items-center gap-6 border-t py-6 pb-28 sm:pb-6">
-      <Signature />
-      <div className="container flex flex-col items-center justify-between space-y-5 text-center lg:flex-row lg:space-y-0 lg:text-left">
-        <div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0 lg:order-2">
-          <div className="flex flex-row flex-wrap justify-center space-x-2 text-sm text-muted-foreground">
-            {defaultAuthor.socialProfiles.map((platform) => (
-              <SocialButton
-                key={platform.name}
-                variant="ghost"
-                size="icon"
-                className="hover:text-foreground"
-                platform={platform}
-              />
-            ))}
-            <CopyButton size="icon" variant="ghost" className="hover:text-foreground" copyText={defaultAuthor.email}>
-              <Mail />
-              <span className="sr-only">Email address</span>
-            </CopyButton>
-          </div>
-        </div>
-        <div className="flex flex-col gap-4 px-8 md:gap-2 md:px-0 lg:order-1">
-          <p className="text-sm text-muted-foreground md:text-left">
-            &copy; {new Date().getFullYear()} Built by {defaultAuthor.name}. &nbsp;
+    <footer className="mx-auto mt-16 max-w-6xl border-t border-border/50 px-4 py-8 pb-28 sm:pb-8">
+      <div className="flex flex-col items-center gap-6 lg:flex-row lg:items-start lg:justify-between">
+        <div className="flex flex-col items-center gap-4 lg:items-start">
+          <Signature />
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            &copy; {new Date().getFullYear()} {defaultAuthor.name}. 
+            <br className="sm:hidden" />
+            {" "}Find me on{" "}
             <a
-              href={defaultAuthor.socialProfiles.find((platform) => platform.name === "x")?.link ?? "#"}
+              href={defaultAuthor.socialProfiles.find((p) => p.name === "x")?.link ?? "#"}
               target="_blank"
               rel="noreferrer"
-              className="font-medium underline underline-offset-4"
+              className="font-medium text-foreground underline-offset-4 transition hover:text-accent-foreground hover:underline"
             >
               {defaultAuthor.handle}
             </a>
           </p>
-          <p className="text-sm text-muted-foreground md:text-left">
-            Source code available on{" "}
+          <p className="text-sm text-muted-foreground">
+            Source on{" "}
             <a
               href={siteMetadata.siteRepo}
               target="_blank"
               rel="noreferrer"
-              className="font-medium underline underline-offset-4"
+              className="font-medium text-foreground underline-offset-4 transition hover:text-accent-foreground hover:underline"
             >
               GitHub
             </a>
-            .
           </p>
+        </div>
+        <div className="flex flex-row flex-wrap items-center justify-center gap-2">
+          {defaultAuthor.socialProfiles.map((platform) => (
+            <SocialButton
+              key={platform.name}
+              variant="ghost"
+              size="icon"
+              className="text-muted-foreground transition hover:text-foreground"
+              platform={platform}
+            />
+          ))}
+          <CopyButton size="icon" variant="ghost" className="text-muted-foreground transition hover:text-foreground" copyText={defaultAuthor.email}>
+            <Mail />
+            <span className="sr-only">Email address</span>
+          </CopyButton>
         </div>
       </div>
     </footer>

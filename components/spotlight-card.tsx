@@ -1,4 +1,3 @@
-// Component inspired by Julien https://www.julienthibeaut.xyz/blog/create-modern-spotlight-effect-with-react-css
 "use client";
 
 import { useRef, useState } from "react";
@@ -67,31 +66,40 @@ export const SpotlightCard = ({ title, description, mediaSrc, mediaType, href }:
       role="link"
       tabIndex={0}
       aria-label={`View ${title} project`}
-      className="relative flex cursor-pointer flex-col justify-start overflow-hidden rounded-md border border-slate-200 bg-gradient-to-r from-slate-100  to-slate-50 shadow-md dark:border-slate-800 dark:from-slate-900 dark:to-slate-950"
+      className="group relative flex cursor-pointer flex-col justify-start overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm transition-all duration-300 hover:shadow-md"
     >
       <div
         className="pointer-events-none absolute -inset-px opacity-0 transition duration-300"
         style={{
           opacity,
           background: `radial-gradient(500px circle at ${position.x}px ${position.y}px, ${
-            theme !== "dark" ? "hsla(0,0%,60%,.1)" : "hsla(360,100%,100%,.06)"
+            theme !== "dark" ? "hsla(223,94%,66%,.08)" : "hsla(223,94%,66%,.12)"
           }, transparent 40%)`,
         }}
       />
 
-      <AspectRatio ratio={16 / 9}>
-        {mediaType === "video" ? (
-          <video autoPlay loop muted playsInline className="m-0 p-0">
-            <source src="/project-garden.webm" type="video/webm" />
-            <source src="/project-garden.mp4" type="video/mp4" />
-          </video>
-        ) : (
-          <Image src={mediaSrc} alt={title} width={960} height={540} sizes="(max-width: 768px) 100vw, 50vw" className="m-0 p-0" />
-        )}
-      </AspectRatio>
-      <div className="p-6">
-        <h2 className="mb-2 line-clamp-1 font-medium tracking-tight text-foreground">{title}</h2>
-        <p className="text-sm text-muted-foreground">{description}</p>
+      <div className="overflow-hidden">
+        <AspectRatio ratio={16 / 9}>
+          {mediaType === "video" ? (
+            <video autoPlay loop muted playsInline className="m-0 h-full w-full object-cover p-0 transition-transform duration-500 group-hover:scale-105">
+              <source src="/project-garden.webm" type="video/webm" />
+              <source src="/project-garden.mp4" type="video/mp4" />
+            </video>
+          ) : (
+            <Image
+              src={mediaSrc}
+              alt={title}
+              width={960}
+              height={540}
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="m-0 h-full w-full object-cover p-0 transition-transform duration-500 group-hover:scale-105"
+            />
+          )}
+        </AspectRatio>
+      </div>
+      <div className="p-5">
+        <h2 className="mb-1.5 line-clamp-1 font-semibold tracking-tight text-foreground">{title}</h2>
+        <p className="text-sm leading-relaxed text-muted-foreground">{description}</p>
       </div>
     </div>
   );

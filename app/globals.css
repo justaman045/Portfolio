@@ -32,15 +32,15 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     --ring: 215 20.2% 65.1%;
-    --radius: 0.3rem;
+    --radius: 0.5rem;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 222.2 84% 2.9%;
     --foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-    --popover: 222.2 84% 4.9%;
+    --popover: 222.2 84% 2.9%;
     --popover-foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
@@ -65,7 +65,76 @@
   body {
     @apply bg-background text-foreground;
   }
+  ::selection {
+    background-color: hsl(223 94% 66% / 0.2);
+  }
   .anchor-heading-link {
     @apply duration-150 before:-ml-5 before:italic before:opacity-0 before:transition-opacity before:content-['#_'] hover:before:opacity-100;
+  }
+}
+
+.prose {
+  max-width: 72ch;
+}
+
+.prose-lg {
+  max-width: 80ch;
+}
+
+.prose pre {
+  position: relative;
+}
+
+.prose .code-header {
+  @apply mb-0 flex items-center justify-between rounded-t-lg border border-b-0 border-muted-foreground/20 bg-muted/50 px-4 py-2 text-xs text-muted-foreground;
+}
+
+.prose .code-header + pre {
+  @apply mt-0 rounded-t-none;
+}
+
+.prose .copy-button {
+  @apply absolute right-2 top-2 z-10 rounded-md border border-muted-foreground/20 bg-background/80 px-2 py-1 text-xs text-muted-foreground opacity-0 transition-opacity backdrop-blur-sm hover:bg-background hover:text-foreground;
+}
+
+.prose pre:hover .copy-button {
+  @apply opacity-100;
+}
+
+@layer utilities {
+  .animate-fade-in-up {
+    animation: fadeInUp 0.5s ease-out forwards;
+  }
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
   }
 }

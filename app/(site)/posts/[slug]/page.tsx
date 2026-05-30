@@ -13,6 +13,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Separator } from "@/components/ui/separator";
 import { Mdx } from "@/components/mdx";
 import { PostSeriesBox } from "@/components/post-series-box";
+import { ReadingProgress } from "@/components/reading-progress";
 import { SocialShare } from "@/components/social-share";
 import { TableOfContents } from "@/components/table-of-contents";
 
@@ -89,6 +90,7 @@ export default async function PostPage({ params }: PostProps) {
 
   return (
     <div className="container max-w-6xl pb-10">
+      <ReadingProgress />
       <nav aria-label="Breadcrumb">
         <ol role="list" className="hidden items-center gap-1 text-sm text-muted-foreground md:flex md:flex-row">
           <li>
@@ -148,7 +150,7 @@ export default async function PostPage({ params }: PostProps) {
             </AccordionItem>
           </Accordion>
         </div>
-        <article className="prose max-w-7xl dark:prose-invert hover:prose-a:text-accent-foreground prose-a:prose-headings:mb-3 prose-a:prose-headings:mt-8 prose-a:prose-headings:font-heading prose-a:prose-headings:font-bold prose-a:prose-headings:leading-tight prose-a:prose-headings:no-underline lg:mr-auto lg:max-w-2xl">
+        <article className="prose prose-lg dark:prose-invert hover:prose-a:text-accent-foreground prose-a:prose-headings:mb-3 prose-a:prose-headings:mt-8 prose-a:prose-headings:font-heading prose-a:prose-headings:font-bold prose-a:prose-headings:leading-tight prose-a:prose-headings:no-underline lg:mr-auto lg:max-w-2xl">
           <h1 className="mb-2 font-heading">{post.title}</h1>
           {post.description && (
             <p className="mb-2 mt-0 text-xl text-slate-700 dark:text-slate-200">{post.description}</p>

@@ -10,10 +10,20 @@ interface HeroProps {
 export function HeroSimple({ title, subtitle }: HeroProps) {
   return (
     <div className="container flex max-w-5xl flex-col items-center justify-center text-center sm:py-20 md:py-32">
-      <h1 className="mb-2 font-heading text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl">
+      <h1 className="animate-fade-in mb-2 font-heading text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl">
         {title}
       </h1>
       <div className="flex content-center items-center justify-center">
+        {subtitle && (
+          <p className="animate-fade-in mb-6 max-w-2xl text-lg leading-relaxed text-muted-foreground" style={{ animationDelay: "0.1s" }}>
+            {subtitle}
+          </p>
+        )}
+      </div>
+      <div
+        className="animate-fade-in flex content-center items-center justify-center"
+        style={{ animationDelay: "0.2s" }}
+      >
         <Image
           className="aspect-square h-10 w-10 rounded-full border border-black"
           width={40}
