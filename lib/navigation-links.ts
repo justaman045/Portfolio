@@ -42,4 +42,8 @@ export const navigationLinks: NavItem[] = [
     title: "Now",
     href: "/now",
   },
+  {
+    title: "Resume",
+    href: "/resume",
+  },
 ];
