@@ -24,7 +24,7 @@ export function TableOfContents({ chapters }: TocProps) {
       },
       {
         rootMargin: "-30% 0px",
-      }
+      },
     );
 
     chapters.forEach((chapter) => {
@@ -38,20 +38,27 @@ export function TableOfContents({ chapters }: TocProps) {
   }, [chapters]);
 
   return (
-    <nav className="flex items-center self-start" aria-label="Table of Contents">
-      <ol className="list-none space-y-3">
+    <nav aria-label="Table of Contents">
+      <ol className="list-none space-y-1">
         {chapters.map((heading: PostHeading) => (
-          <li
-            key={heading.slug}
-            className={cn(
-              "list-none text-sm font-bold transition-colors duration-200 ease-in-out hover:text-accent-foreground",
-              heading.heading === 3 && "ml-6 font-normal",
-              heading.heading === 4 && "ml-8 font-normal",
-              heading.heading === 5 && "ml-10 font-normal",
-              activeSlug === heading.slug && "text-accent-foreground"
-            )}
-          >
-            <Link href={`#${heading.slug}`}>{heading.text}</Link>
+          <li key={heading.slug}>
+            <Link
+              href={`#${heading.slug}`}
+              className={cn(
+                "relative block rounded-md px-3 py-1.5 text-sm transition-all duration-200",
+                heading.heading === 3 && "ml-4",
+                heading.heading === 4 && "ml-8",
+                heading.heading === 5 && "ml-10",
+                activeSlug === heading.slug
+                  ? "bg-accent-foreground/10 font-medium text-accent-foreground"
+                  : "text-muted-foreground hover:bg-accent-foreground/5 hover:text-foreground",
+              )}
+            >
+              {activeSlug === heading.slug && (
+                <span className="absolute left-0 top-1/2 h-4 w-0.5 -translate-y-1/2 rounded-r-full bg-accent-foreground" />
+              )}
+              {heading.text}
+            </Link>
           </li>
         ))}
       </ol>

@@ -9,7 +9,7 @@ export async function GET(request: Request) {
     description: siteMetadata.description,
     site_url: BASE_URL,
     feed_url: `${BASE_URL}/feed.xml`,
-    copyright: `© 2023 ${defaultAuthor.name}`,
+    copyright: `© ${new Date().getFullYear()} ${defaultAuthor.name}`,
     language: "en-US",
     pubDate: new Date(),
   });

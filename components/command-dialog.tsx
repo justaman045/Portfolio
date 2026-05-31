@@ -72,23 +72,23 @@ export function CommandDialogComponent({ ...props }: React.ComponentPropsWithout
             {navigationLinks.map((item) =>
               item.content ? (
                 item.content.map((subItem) => (
-                  <CommandItem
-                    key={subItem.title.trim()}
-                    onSelect={() => {
-                      runCommand(() => navigate(subItem.href as string));
-                    }}
-                  >
-                    <File className="mr-2 h-4 w-4" />
-                    <span>{subItem.title}</span>
-                  </CommandItem>
-                ))
-              ) : (
-                <CommandItem
-                  key={item.title.trim()}
-                  onSelect={() => {
-                    runCommand(() => navigate(item.href as string));
-                  }}
-                >
+                      <CommandItem
+                        key={subItem.title.trim()}
+                        onSelect={() => {
+                          runCommand(() => navigate(subItem.href ?? "#"));
+                        }}
+                      >
+                        <File className="mr-2 h-4 w-4" />
+                        <span>{subItem.title}</span>
+                      </CommandItem>
+                    ))
+                  ) : (
+                    <CommandItem
+                      key={item.title.trim()}
+                      onSelect={() => {
+                        runCommand(() => navigate(item.href ?? "#"));
+                      }}
+                    >
                   <File className="mr-2 h-4 w-4" />
                   <span>{item.title}</span>
                 </CommandItem>
@@ -100,7 +100,7 @@ export function CommandDialogComponent({ ...props }: React.ComponentPropsWithout
             <CommandItem
               onSelect={() => {
                 runCommand(() =>
-                  navigate(defaultAuthor.socialProfiles.find((platform) => platform.name === "twitter")?.link as string)
+                  navigate(defaultAuthor.socialProfiles.find((platform) => platform.name === "twitter")?.link ?? "#")
                 );
               }}
             >
@@ -110,7 +110,7 @@ export function CommandDialogComponent({ ...props }: React.ComponentPropsWithout
             <CommandItem
               onSelect={() => {
                 runCommand(() =>
-                  navigate(defaultAuthor.socialProfiles.find((platform) => platform.name === "github")?.link as string)
+                  navigate(defaultAuthor.socialProfiles.find((platform) => platform.name === "github")?.link ?? "#")
                 );
               }}
             >

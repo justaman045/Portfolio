@@ -52,17 +52,22 @@ export default async function PagePage({ params }: PageProps) {
 
   return (
     <div className="container max-w-6xl pb-10">
-      <article className="prose prose-lg mx-auto dark:prose-invert prose-headings:mb-3 prose-headings:mt-8 prose-headings:font-heading prose-headings:font-bold prose-headings:leading-tight hover:prose-a:text-accent-foreground prose-a:prose-headings:no-underline">
-        <h1 className="mt-0">{page.title}</h1>
-        {page.description && <p className="m-0 text-xl">{page.description}</p>}
+      <div className="mb-8">
+        <h1 className="font-heading text-4xl font-bold">{page.title}</h1>
+        {page.description && (
+          <p className="mt-2 max-w-2xl text-lg leading-relaxed text-muted-foreground">{page.description}</p>
+        )}
         {page.lastUpdatedDate && (
-          <time className="text-sm text-slate-500">
+          <time className="mt-2 block text-sm text-muted-foreground/60">
             Last updated: {format(parseISO(page.lastUpdatedDate), "LLLL d, yyyy")}
           </time>
         )}
-        <hr className="my-4" />
-        <Mdx code={page.body.raw} />
-      </article>
+      </div>
+      <div className="rounded-xl border border-border/50 bg-background p-6 sm:p-8">
+        <article className="prose dark:prose-invert max-w-none prose-headings:mb-3 prose-headings:mt-6 prose-headings:font-heading prose-headings:font-bold prose-headings:leading-tight hover:prose-a:text-accent-foreground">
+          <Mdx code={page.body.raw} />
+        </article>
+      </div>
     </div>
   );
 }

@@ -46,8 +46,7 @@ export function Navigation() {
           link={siteMetadata.announcement.link ?? ""}
         >
           <Rocket className="mr-2 h-5 w-5" />
-          <strong className="mr-1">Launching on DevHunt!</strong> If you like this template, please support me by
-          upvoting on DevHunt from Aug 21-27.
+          <strong className="mr-1">Check out my projects!</strong> I build automation systems, SaaS products, and AI tools.
         </AnnouncementBar>
       )}
       <header

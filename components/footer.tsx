@@ -19,7 +19,7 @@ const Footer = () => {
             <a
               href={defaultAuthor.socialProfiles.find((p) => p.name === "x")?.link ?? "#"}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="font-medium text-foreground underline-offset-4 transition hover:text-accent-foreground hover:underline"
             >
               {defaultAuthor.handle}
@@ -30,7 +30,7 @@ const Footer = () => {
             <a
               href={siteMetadata.siteRepo}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="font-medium text-foreground underline-offset-4 transition hover:text-accent-foreground hover:underline"
             >
               GitHub

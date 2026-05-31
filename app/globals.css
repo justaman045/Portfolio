@@ -1,12 +1,12 @@
 @tailwind base;
 @tailwind components;
 
-.footnotes {
-  @apply mb-6 border-t border-muted-foreground pt-2 text-sm text-muted-foreground;
+html {
+  scroll-behavior: smooth;
 }
 
-.anchor-heading-link {
-  @apply duration-150 before:-ml-5 before:italic before:opacity-0 before:transition-opacity before:content-['#_'] hover:before:opacity-100;
+.footnotes {
+  @apply mb-6 border-t border-muted-foreground pt-2 text-sm text-muted-foreground;
 }
 
 @tailwind utilities;
@@ -69,7 +69,11 @@
     background-color: hsl(223 94% 66% / 0.2);
   }
   .anchor-heading-link {
-    @apply duration-150 before:-ml-5 before:italic before:opacity-0 before:transition-opacity before:content-['#_'] hover:before:opacity-100;
+    @apply no-underline before:absolute before:-ml-5 before:opacity-0 before:transition-opacity before:content-['#'] hover:before:opacity-100;
+    text-decoration: none !important;
+  }
+  .anchor-heading-link::before {
+    @apply text-muted-foreground/30;
   }
 }
 
@@ -79,6 +83,54 @@
 
 .prose-lg {
   max-width: 80ch;
+}
+
+.prose :where(h1, h2, h3, h4) .anchor-heading-link {
+  text-decoration: none !important;
+}
+
+.prose :where(h1, h2, h3, h4) a:has(.anchor-heading-link) {
+  text-decoration: none !important;
+}
+
+.prose a {
+  @apply decoration-accent-foreground/30 decoration-1 underline-offset-2 transition-all duration-200 hover:decoration-accent-foreground;
+}
+
+.prose blockquote {
+  @apply not-italic border-l-2 border-accent-foreground/30 bg-accent-foreground/5 py-3 pr-4;
+}
+
+.prose code {
+  @apply rounded-md bg-accent-foreground/10 px-1.5 py-0.5 text-sm font-normal text-foreground;
+}
+
+.prose pre code {
+  @apply bg-transparent p-0 text-inherit;
+}
+
+.prose img {
+  @apply rounded-xl border border-border/50 shadow-md;
+}
+
+.prose table {
+  @apply overflow-hidden rounded-xl border border-border/50;
+}
+
+.prose th {
+  @apply bg-accent-foreground/5 px-4 py-2 text-left text-sm font-semibold text-foreground;
+}
+
+.prose td {
+  @apply border-t border-border/30 px-4 py-2 text-sm;
+}
+
+.prose hr {
+  @apply border-border/30;
+}
+
+.prose :where(h2, h3, h4) {
+  @apply relative;
 }
 
 .prose pre {

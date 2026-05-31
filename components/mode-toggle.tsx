@@ -10,6 +10,7 @@ export function ModeToggle() {
 
   // useEffect only runs on the client, so now we can safely show the UI
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Required for next-themes hydration guard
     setMounted(true);
   }, []);
 

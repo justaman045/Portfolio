@@ -39,6 +39,10 @@ export const navigationLinks: NavItem[] = [
     href: "/tech-stack",
   },
   {
+    title: "Activity",
+    href: "/activity",
+  },
+  {
     title: "Now",
     href: "/now",
   },

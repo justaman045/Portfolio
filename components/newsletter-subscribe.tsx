@@ -102,7 +102,7 @@ const NewsletterSubscribe = ({
           {siteMetadata.newsletterUrl && (
             <div className="mt-4 flex items-center justify-center">
               <Button asChild variant="ghost">
-                <Link href={siteMetadata.newsletterUrl} target="_blank">
+                <Link href={siteMetadata.newsletterUrl} target="_blank" rel="noopener noreferrer">
                   Let me read it first <ArrowRight className="mr-2 h-4 w-4" />
                 </Link>
               </Button>

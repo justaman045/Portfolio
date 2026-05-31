@@ -5,6 +5,7 @@ export const projects = [
     href: "https://github.com/justaman045/Agentic-TODO",
     mediaSrc: "/2.jpg",
     mediaType: "image",
+    category: "Flutter",
   },
   {
     title: "Finance Control",
@@ -12,6 +13,7 @@ export const projects = [
     href: "https://github.com/justaman045/Finance-Control",
     mediaSrc: "/3.jpg",
     mediaType: "image",
+    category: "Flutter",
   },
   {
     title: "Assistant",
@@ -19,6 +21,7 @@ export const projects = [
     href: "https://github.com/justaman045/Assistant",
     mediaSrc: "/4.jpg",
     mediaType: "image",
+    category: "Next.js",
   },
   {
     title: "SaaS Waitlist",
@@ -26,6 +29,7 @@ export const projects = [
     href: "https://github.com/justaman045/Saas-Waitlist",
     mediaSrc: "/5.jpg",
     mediaType: "image",
+    category: "Next.js",
   },
   {
     title: "CodeitDown",
@@ -33,6 +37,7 @@ export const projects = [
     href: "https://github.com/justaman045/codeitdown",
     mediaSrc: "/6.jpg",
     mediaType: "image",
+    category: "Next.js",
   },
   {
     title: "Instagram Content Analyzer",
@@ -40,6 +45,7 @@ export const projects = [
     href: "https://github.com/justaman045/Instagram-Content-Analyzer",
     mediaSrc: "/7.jpg",
     mediaType: "image",
+    category: "Python",
   },
   {
     title: "Job Application Tracker",
@@ -47,5 +53,6 @@ export const projects = [
     href: "https://github.com/justaman045/Job-Application-tracker",
     mediaSrc: "/8.jpg",
     mediaType: "image",
+    category: "React",
   },
 ];
