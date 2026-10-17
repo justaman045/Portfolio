@@ -7,7 +7,7 @@ Live site: https://justaman045.vercel.app
 ## What This Repo Contains
 
 - Portfolio pages for profile, projects, tech stack, posts, tags, and social stats.
-- MDX/Markdown publishing pipeline powered by `next-mdx-remote` + `gray-matter`.
+- MDX/Markdown publishing pipeline powered by `next-mdx-remote` + `js-yaml` frontmatter parsing.
 - Project catalog highlighting Agentic TODO, Finance Control, Assistant, SaaS Waitlist, CodeitDown, Instagram Content Analyzer, and Job Application Tracker.
 - SEO metadata, RSS feed, Open Graph/Twitter images, sitemap, and robots routes.
 - Optional analytics and newsletter integrations.

@@ -1,11 +1,20 @@
 import fs from "fs";
 import path from "path";
-import matter from "gray-matter";
+import yaml from "js-yaml";
 
 import { PostHeading } from "@/types";
 
 const postsDirectory = path.join(process.cwd(), "content/posts");
 const pagesDirectory = path.join(process.cwd(), "content/pages");
+
+const frontmatterRegex = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/;
+
+function parseFrontmatter(raw: string): { data: Record<string, unknown>; content: string } {
+  const match = frontmatterRegex.exec(raw);
+  if (!match) return { data: {}, content: raw };
+  const data = (yaml.load(match[1]) as Record<string, unknown> | undefined) ?? {};
+  return { data, content: raw.slice(match[0].length) };
+}
 
 function calculateReadTime(text: string): number {
   const wordsPerMinute = 200;
@@ -42,7 +51,7 @@ function readDoc<T = Record<string, unknown>>(
 ): { data: Record<string, unknown> & T; content: string; slug: string } | null {
   if (!fs.existsSync(filePath)) return null;
   const raw = fs.readFileSync(filePath, "utf8");
-  const { data, content } = matter(raw);
+  const { data, content } = parseFrontmatter(raw);
   const slug = path.basename(filePath).replace(/\.(mdx?)$/, "");
   return { data: data as any, content, slug };
 }

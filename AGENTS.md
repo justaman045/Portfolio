@@ -28,7 +28,7 @@ Pre-commit (husky + lint-staged, .lintstagedrc): runs `eslint --fix` on `*.{js,j
 ## Architecture
 
 - **Next.js 16 App Router**, React 19, TypeScript (strict), Tailwind CSS, shadcn/ui
-- **MDX data layer**: `lib/mdx.ts` reads `content/posts/**/*.mdx` and `content/pages/**/*.mdx`. Uses `gray-matter` for frontmatter and `next-mdx-remote/rsc` to render MDX as RSC. Posts/Pages include `status: "draft" | "published"`.
+- **MDX data layer**: `lib/mdx.ts` reads `content/posts/**/*.mdx` and `content/pages/**/*.mdx`. Parses `---` frontmatter with `js-yaml` and renders MDX as RSC via `next-mdx-remote/rsc`. Posts/Pages include `status: "draft" | "published"`.
 - **MDX pipeline**: `remark-gfm`, `remark-math`, `rehype-katex`, `rehype-pretty-code` (github-dark theme), `rehype-slug`, `rehype-autolink-headings`. `rehype-pretty-code` callbacks `onVisitLine`/`onVisitHighlightedLine` are `any`-typed with FIXME comments.
 
 ## Content & Visibility
