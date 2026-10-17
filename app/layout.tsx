@@ -1,7 +1,7 @@
 import "./globals.css";
 
 import { Metadata } from "next";
-import { Archivo, Space_Grotesk } from "next/font/google";
+import localFont from "next/font/local";
 
 import siteMetadata, { BASE_URL, defaultAuthor } from "@/lib/metadata";
 import { Toaster } from "@/components/ui/toaster";
@@ -9,17 +9,17 @@ import { Analytics } from "@/components/analytics";
 import { BackTopButton } from "@/components/back-to-top";
 import { ThemeProvider } from "@/components/theme-provider";
 
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
+const spaceGrotesk = localFont({
+  src: "./fonts/space-grotesk.woff2",
   display: "swap",
   variable: "--font-space",
-  weight: ["400", "600", "700"],
+  weight: "300 700",
 });
-const archivo = Archivo({
-  subsets: ["latin"],
+const archivo = localFont({
+  src: "./fonts/archivo.woff2",
   display: "swap",
   variable: "--font-archivo",
-  weight: ["400", "500", "600"],
+  weight: "100 900",
 });
 
 export const metadata: Metadata = {
