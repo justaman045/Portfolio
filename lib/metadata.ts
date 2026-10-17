@@ -4,7 +4,9 @@ import { socialProfiles } from "./social-data";
 
 export const BASE_URL =
   process.env.NEXT_PUBLIC_BASE_URL ||
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : `http://localhost:${process.env.PORT || 3000}`);
+  (process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : `http://localhost:${process.env.PORT || 3000}`);
 
 export const defaultAuthor: AuthorType = {
   name: "{ Aman }",
@@ -46,7 +48,12 @@ const siteMetadata: SiteMetaData = {
   postsPerPage: 4,
   postsOnHomePage: 4,
   projectsOnHomePage: 3,
-  instagramAccounts: ["lethal_astra", "justaman045", "1stay_Consistent", "shawmir26"],
+  instagramAccounts: [
+    "lethal_astra",
+    "justaman045",
+    "1stay_Consistent",
+    "shawmir26",
+  ],
 };
 
 export default siteMetadata;

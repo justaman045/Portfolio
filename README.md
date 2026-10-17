@@ -7,19 +7,19 @@ Live site: https://justaman045.vercel.app
 ## What This Repo Contains
 
 - Portfolio pages for profile, projects, tech stack, posts, tags, and social stats.
-- MDX/Markdown publishing pipeline powered by Contentlayer.
+- MDX/Markdown publishing pipeline powered by `next-mdx-remote` + `gray-matter`.
 - Project catalog highlighting Agentic TODO, Finance Control, Assistant, SaaS Waitlist, CodeitDown, Instagram Content Analyzer, and Job Application Tracker.
 - SEO metadata, RSS feed, Open Graph/Twitter images, sitemap, and robots routes.
 - Optional analytics and newsletter integrations.
 
 ## Tech Stack
 
-- Next.js App Router
-- React
+- Next.js 16 App Router
+- React 19
 - TypeScript
 - Tailwind CSS
-- Contentlayer + MDX
-- Radix UI primitives
+- MDX with next-mdx-remote/rsc
+- Radix UI primitives + shadcn/ui
 - Vercel Analytics
 
 ## Local Development
@@ -36,8 +36,9 @@ Open `http://localhost:3000`.
 
 ```bash
 npm run dev      # start local dev server
-npm run build    # build Contentlayer output and Next.js app
+npm run build    # build Next.js app (NODE_ENV=production)
 npm run start    # serve production build
+npm run preview  # build and start
 npm run lint     # run ESLint
 npm run format   # format source/content files
 ```
@@ -46,14 +47,14 @@ npm run format   # format source/content files
 
 The app works without private API keys. Optional integrations are documented in `.env.example`.
 
-Do not commit `.env`, `.env.local`, or API keys. A previously tracked local env file was removed from this repo; rotate any exposed keys before using them again.
+Do not commit `.env`, `.env.local`, or API keys. Rotate any exposed keys before using them again.
 
 ## Security Notes
 
 - `poweredByHeader` is disabled in `next.config.js`.
 - Private stats integrations use server-only env vars.
 - External links should include `rel="noreferrer noopener"` when opened in a new tab.
-- Keep `npm audit` part of dependency maintenance. Contentlayer currently has stale transitive audit findings, so replacing or upgrading the content pipeline should be considered during a future larger modernization.
+- Keep dependencies up to date. Several transitive deps are pinned via `overrides` in `package.json`.
 
 ## License
 

@@ -15,7 +15,12 @@ const spaceGrotesk = Space_Grotesk({
   variable: "--font-space",
   weight: ["400", "600", "700"],
 });
-const archivo = Archivo({ subsets: ["latin"], display: "swap", variable: "--font-archivo", weight: ["400", "500", "600"] });
+const archivo = Archivo({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-archivo",
+  weight: ["400", "500", "600"],
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
@@ -28,6 +33,39 @@ export const metadata: Metadata = {
       "application/rss+xml": `${BASE_URL}/feed.xml`,
     },
   },
+  keywords: [
+    "Aman Ojha",
+    "justaman045",
+    "SDET",
+    "Software Engineer in Test",
+    "Flutter Developer",
+    "Full Stack Engineer",
+    "Next.js",
+    "React",
+    "TypeScript",
+    "Portfolio",
+    "Engineering Blog",
+    "Automation Testing",
+    "Selenium",
+    "Playwright",
+    "Test Automation",
+    "AI Tools",
+    "SaaS",
+  ],
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: BASE_URL,
+    title: siteMetadata.title.default,
+    description: siteMetadata.description,
+    siteName: siteMetadata.title.default,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteMetadata.title.default,
+    description: siteMetadata.description,
+    creator: defaultAuthor.handle,
+  },
 };
 
 interface RootLayoutProps {
@@ -36,9 +74,17 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${archivo.variable}`} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${spaceGrotesk.variable} ${archivo.variable}`}
+      suppressHydrationWarning
+    >
       <body className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-white text-slate-900 antialiased dark:bg-gradient-to-b dark:from-[#0a0e17] dark:via-[#0d1220] dark:to-[#0f1525] dark:text-slate-50">
-        <ThemeProvider attribute="class" defaultTheme={siteMetadata.defaultTheme} enableSystem>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme={siteMetadata.defaultTheme}
+          enableSystem
+        >
           {children}
           <BackTopButton />
           <Toaster />
